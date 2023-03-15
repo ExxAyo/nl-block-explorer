@@ -1,0 +1,33 @@
+{
+  "name": "nl-block-explorer",
+  "private": false,
+  "version": "1.0.0",
+  "description": "Ask plain-language questions about Ethereum blocks, transactions, and balances.",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -n client,server -c blue,gray \"vite\" \"tsx watch server/index.ts\"",
+    "build": "tsc -p tsconfig.server.json && vite build",
+    "start": "node dist/server/index.js",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "openai": "^4.20.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "viem": "^1.21.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@vitejs/plugin-react": "^4.2.0",
+    "concurrently": "^8.2.2",
+    "tsx": "^4.6.0",
+    "typescript": "^5.2.2",
+    "vite": "^4.5.0"
+  }
+}
