@@ -5,6 +5,7 @@ const EXAMPLES = [
   'What is the latest block?',
   'Show balance of vitalik.eth',
   'Block number 19000000',
+  'Show transaction 0x…',
 ];
 
 export default function App() {
