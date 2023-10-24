@@ -97,3 +97,7 @@ export async function runExplorerQuery(parsed: ParsedQuery) {
       );
   }
 }
+
+export function rpcEndpoint(): string {
+  return process.env.ETH_RPC_URL?.trim() || 'https://ethereum.publicnode.com';
+}
