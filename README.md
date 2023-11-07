@@ -40,3 +40,8 @@ Open http://localhost:5173 — the Vite dev server proxies `/api` to the Express
 ## License
 
 MIT
+
+## Notes
+
+- Without OPENAI_API_KEY the server uses deterministic regex parsing.
+- ENS names resolve on mainnet when asking for balances.
