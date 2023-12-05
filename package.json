@@ -2,7 +2,7 @@
   "name": "nl-block-explorer",
   "private": false,
   "version": "1.0.0",
-  "description": "Ask plain-language questions about Ethereum blocks, transactions, and balances.",
+  "description": "Plain-language Ethereum block explorer with OpenAI query parsing.",
   "type": "module",
   "scripts": {
     "dev": "concurrently -n client,server -c blue,gray \"vite\" \"tsx watch server/index.ts\"",
