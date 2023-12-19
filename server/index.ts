@@ -19,6 +19,11 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
+app.use('/api', (_req, res, next) => {
+  res.setHeader('Cache-Control', 'no-store');
+  next();
+});
+
 app.post('/api/query', async (req, res) => {
   const question = typeof req.body?.question === 'string' ? req.body.question.trim() : '';
 
