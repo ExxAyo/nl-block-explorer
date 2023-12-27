@@ -45,7 +45,7 @@ export default function App() {
         <h1>Natural Language Block Explorer</h1>
         <p>Ask about Ethereum balances, blocks, and transactions.</p>
         <p className="meta">
-          Parser: {parser === 'llm' ? 'OpenAI + rules fallback' : parser === 'rules' ? 'Rules only (set OPENAI_API_KEY)' : 'Checking…'}
+          Parser: {parser === 'llm' ? 'OpenAI + rules fallback' : parser === 'rules' ? 'Rules only — add OPENAI_API_KEY to .env' : 'Checking…'}
         </p>
       </header>
 
