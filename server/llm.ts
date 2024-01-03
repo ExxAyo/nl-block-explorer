@@ -22,8 +22,11 @@ Rules:
 
 Use null for unused fields. Do not invent hashes or addresses.`;
 
-export async function parseQuestion(question: string): Promise<ParsedQuery> {
-  const apiKey = process.env.OPENAI_API_KEY?.trim();
+export async function parseQuestion(
+  question: string,
+  apiKeyOverride?: string,
+): Promise<ParsedQuery> {
+  const apiKey = apiKeyOverride?.trim() || process.env.OPENAI_API_KEY?.trim();
   if (!apiKey) {
     return parseWithRules(question);
   }
@@ -48,8 +51,4 @@ export async function parseQuestion(question: string): Promise<ParsedQuery> {
   }
 
   return parseWithRules(question);
-}
-
-export function parserMode(): 'llm' | 'rules' {
-  return process.env.OPENAI_API_KEY?.trim() ? 'llm' : 'rules';
 }

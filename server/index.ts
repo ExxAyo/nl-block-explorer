@@ -2,7 +2,7 @@ import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
 import { runExplorerQuery } from './explorer.js';
-import { parseQuestion, parserMode } from './llm.js';
+import { parseQuestion } from './llm.js';
 import type { QueryResponse } from './types.js';
 
 const app = express();
@@ -14,7 +14,6 @@ app.use(express.json({ limit: '32kb' }));
 app.get('/api/health', (_req, res) => {
   res.json({
     ok: true,
-    parser: parserMode(),
     rpc: process.env.ETH_RPC_URL?.trim() || 'https://ethereum.publicnode.com',
   });
 });
@@ -26,6 +25,8 @@ app.use('/api', (_req, res, next) => {
 
 app.post('/api/query', async (req, res) => {
   const question = typeof req.body?.question === 'string' ? req.body.question.trim() : '';
+  const openaiApiKey =
+    typeof req.body?.openaiApiKey === 'string' ? req.body.openaiApiKey.trim() : '';
 
   if (!question) {
     res.status(400).json({ error: 'Question is required.' });
@@ -33,7 +34,7 @@ app.post('/api/query', async (req, res) => {
   }
 
   try {
-    const parsed = await parseQuestion(question);
+    const parsed = await parseQuestion(question, openaiApiKey || undefined);
     const result = await runExplorerQuery(parsed);
     const payload: QueryResponse = {
       question,
@@ -50,5 +51,4 @@ app.post('/api/query', async (req, res) => {
 
 app.listen(port, () => {
   console.log(`nl-block-explorer server on http://localhost:${port}`);
-  console.log(`parser mode: ${parserMode()}`);
 });
