@@ -16,7 +16,6 @@ export interface QueryResponse {
 
 export interface HealthResponse {
   ok: boolean;
-  parser: 'llm' | 'rules';
   rpc: string;
 }
 
@@ -26,11 +25,17 @@ export async function fetchHealth(): Promise<HealthResponse> {
   return res.json();
 }
 
-export async function askQuestion(question: string): Promise<QueryResponse> {
+export async function askQuestion(
+  question: string,
+  openaiApiKey?: string,
+): Promise<QueryResponse> {
   const res = await fetch('/api/query', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ question }),
+    body: JSON.stringify({
+      question,
+      ...(openaiApiKey?.trim() ? { openaiApiKey: openaiApiKey.trim() } : {}),
+    }),
   });
   const body = await res.json();
   if (!res.ok) {
