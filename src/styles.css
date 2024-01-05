@@ -53,6 +53,16 @@ label {
   color: #333;
 }
 
+textarea,
+input[type='password'] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #999;
+  border-radius: 2px;
+  font: inherit;
+  margin-bottom: 4px;
+}
+
 textarea {
   width: 100%;
   padding: 8px;
@@ -144,3 +154,5 @@ textarea:focus-visible {
   outline: 2px solid #0645ad;
   outline-offset: 1px;
 }
+
+.hint { margin: 0 0 10px; font-size: 12px; color: #666; }
