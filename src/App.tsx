@@ -17,6 +17,7 @@ export default function App() {
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [suggestApiKey, setSuggestApiKey] = useState(false);
   const [result, setResult] = useState<QueryResponse | null>(null);
 
   async function onSubmit(event: FormEvent) {
@@ -24,6 +25,7 @@ export default function App() {
     if (!question.trim()) return;
     setLoading(true);
     setError(null);
+    setSuggestApiKey(false);
     try {
       const trimmedKey = openaiApiKey.trim();
       if (trimmedKey) sessionStorage.setItem(STORAGE_KEY, trimmedKey);
@@ -32,7 +34,9 @@ export default function App() {
       setResult(response);
     } catch (err) {
       setResult(null);
-      setError(err instanceof Error ? err.message : 'Something went wrong');
+      const message = err instanceof Error ? err.message : 'Something went wrong';
+      setError(message);
+      setSuggestApiKey(!openaiApiKey.trim() && message.toLowerCase().includes('could not understand'));
     } finally {
       setLoading(false);
     }
@@ -48,8 +52,8 @@ export default function App() {
         <label htmlFor="question">Question</label>
         <textarea id="question" rows={3} value={question} onChange={(e) => setQuestion(e.target.value)} placeholder="e.g. balance of 0x… or latest block" />
         <label htmlFor="openai-key">OpenAI API key (optional)</label>
-        <input id="openai-key" type="password" value={openaiApiKey} onChange={(e) => setOpenaiApiKey(e.target.value)} placeholder="sk-…" autoComplete="off" />
-        <p className="hint">Leave blank to use the built-in rules parser. Stored in this browser tab only.</p>
+        <input id="openai-key" type="password" value={openaiApiKey} onChange={(e) => { setOpenaiApiKey(e.target.value); if (suggestApiKey) setSuggestApiKey(false); }} placeholder="sk-…" autoComplete="off" className={suggestApiKey ? 'highlight' : undefined} />
+        <p className="hint">Leave blank to use the built-in rules parser. Add a key to enable gpt-3.5-turbo parsing.</p>
         <div className="row">
           <button type="submit" disabled={loading || !question.trim()}>{loading ? 'Running…' : 'Ask'}</button>
           <div className="examples">{EXAMPLES.map((sample) => (
@@ -57,7 +61,15 @@ export default function App() {
           ))}</div>
         </div>
       </form>
-      {error && <section className="panel error"><strong>Error</strong><p>{error}</p></section>}
+      {error && (
+        <section className="panel error">
+          <strong>Error</strong>
+          <p>{error}</p>
+          {suggestApiKey && (
+            <p className="error-tip">The rules parser could not map your question. Enter an OpenAI API key above and try again.</p>
+          )}
+        </section>
+      )}
       {result && <section className="panel"><h2>Result</h2><p>{result.summary}</p><pre>{JSON.stringify(result.data, null, 2)}</pre></section>}
       <footer>Mainnet RPC via viem. Your API key is sent only with your query.</footer>
     </div>
