@@ -5,6 +5,8 @@ export type QueryAction =
   | 'latest_block'
   | 'unknown';
 
+export type ChainId = 'mainnet' | 'base' | 'arbitrum' | 'polygon' | 'optimism';
+
 export interface ParsedQuery {
   action: QueryAction;
   address?: string;
@@ -16,7 +18,14 @@ export interface ParsedQuery {
 
 export interface QueryResponse {
   question: string;
+  chain: ChainId;
   parsed: ParsedQuery;
   summary: string;
   data: Record<string, unknown>;
+}
+
+export interface ChainOption {
+  id: ChainId;
+  name: string;
+  nativeSymbol: string;
 }
