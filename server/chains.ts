@@ -1,6 +1,7 @@
 import {
   createPublicClient,
   http,
+  type Chain,
   type PublicClient,
 } from 'viem';
 import {
@@ -20,7 +21,7 @@ export interface ChainOption {
 }
 
 interface ChainConfig {
-  chain: typeof mainnet;
+  chain: Chain;
   rpc: string;
   nativeSymbol: string;
 }
